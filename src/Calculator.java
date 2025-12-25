@@ -21,7 +21,7 @@ public class Calculator {
                 System.out.print("선택: ");
                 menu = scanner.nextInt();
             } catch (Exception e) {
-                System.out.println("숫자만 입력하세요.");
+                System.out.println("숫자를 입력하세요.");
                 scanner.nextLine();
                 continue;
             }
@@ -44,7 +44,7 @@ public class Calculator {
                                 scanner.nextLine();
                                 break;
                             } catch (Exception e) {
-                                System.out.print("숫자만 입력하세요.");
+                                System.out.print("숫자를 입력하세요.");
                                 scanner.nextLine();
                             }
                         }
@@ -60,7 +60,7 @@ public class Calculator {
                                     || operator.equals("sqrt")) {
                                 break;
                             }
-                            System.out.println("잘못된 연산자입니다. 다시 입력해주세요.");
+                            System.out.println("지원하지 않는 연산자입니다. 다시 입력해주세요.");
                         }
                         if (!operator.equals("sqrt")) {
                             while (true) {
@@ -76,7 +76,7 @@ public class Calculator {
                                     }
                                     break;
                                 } catch (Exception e) {
-                                    System.out.println("숫자만 입력하세요.");
+                                    System.out.println("숫자를 입력하세요.");
                                     scanner.nextLine();
                                 }
                             }
