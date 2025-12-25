@@ -50,33 +50,35 @@ public class Calculator {
                         }
 
                         while (true) {
-                            System.out.print("연산자를 입력하세요 (+ , -, *, /): ");
+                            System.out.print("연산자를 입력하세요 (+ , -, *, /, %, ^, sqrt): ");
                             operator = scanner.nextLine();
 
                             // 잘못된 연산자 입력처리
                             if (operator.equals("+") || operator.equals("-")
-                                    || operator.equals("*") || operator.equals("/")) {
+                                    || operator.equals("*") || operator.equals("/")
+                                    || operator.equals("%") || operator.equals("^")
+                                    || operator.equals("sqrt")) {
                                 break;
                             }
                             System.out.println("잘못된 연산자입니다. 다시 입력해주세요.");
                         }
+                        if (!operator.equals("sqrt")) {
+                            while (true) {
+                                // n0으로 나누기 예외처리
+                                try {
+                                    System.out.print("두 번째 숫자를 입력하세요: ");
+                                    num2 = scanner.nextDouble();
+                                    scanner.nextLine();
 
-
-                        while (true) {
-                            // n0으로 나누기 예외처리
-                            try {
-                                System.out.print("두 번째 숫자를 입력하세요: ");
-                                num2 = scanner.nextDouble();
-                                scanner.nextLine();
-
-                                if (operator.equals("/") && num2 == 0) {
-                                    System.out.println("0으로 나눌 수 없습니다.");
-                                    continue;
+                                    if (operator.equals("/") && num2 == 0) {
+                                        System.out.println("0으로 나눌 수 없습니다.");
+                                        continue;
+                                    }
+                                    break;
+                                } catch (Exception e) {
+                                    System.out.println("숫자만 입력하세요.");
+                                    scanner.nextLine();
                                 }
-                                break;
-                            } catch (Exception e) {
-                                System.out.println("숫자만 입력하세요.");
-                                scanner.nextLine();
                             }
                         }
                         // 사칙연산 구현
@@ -93,8 +95,25 @@ public class Calculator {
                             case "/":
                                 result = num1 / num2;
                                 break;
+                            case "%":
+                                result = num1 % num2;
+                                break;
+                            case "^":
+                                result = Math.pow(num1, num2);
+                                break;
+                            case "sqrt":
+                                if (num1 < 0) {
+                                    System.out.println("음수의 제곱근은 계산할 수 없습니다.");
+                                    continue;
+                                }
+                                result = Math.sqrt(num1);
+                                break;
                         }
 
+                        // 출력 & 이력
+                        if (operator.equals("sqrt")) {
+                            System.out.println("결과: sqrt(" + num1 + ") = " + result);
+                        }
                         System.out.println("결과: " + num1 + " " + operator + " " + num2 + " = " + result);
                         // 계산 이력 저장
                         String record = num1 + " " + operator + " " + num2 + " = " + result;
