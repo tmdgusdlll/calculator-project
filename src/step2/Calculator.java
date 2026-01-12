@@ -2,11 +2,11 @@ package step2;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Calculator {
-    Scanner sc = new Scanner(System.in);
-    List<String> record = new ArrayList<>();
+    // 캡슐화 private 키워드 사용하여 접근제어(App 클래스의 main메서드로부터)
+    // 연산 결과 저장하는 컬레션 타입(ArratList) 생성
+    private List<Integer> history = new ArrayList<>();
 
     int result = 0;
 
@@ -30,9 +30,19 @@ public class Calculator {
             default:
                 System.out.println("올바른 연산자가 아닙니다.");
         }
-        record.add(num1 + " " + operator + " " + num2 + "=" + result);
+        // 연산 결과값 저장
+//        history.add(result);   -> 저장하는 역할을 세터에게 넘겼음 *한 메서드당 하나의 기능을 맡는 것이 좋다.
         return result;
+    }
 
+    // Getter 메서드
+    public List<Integer> getHistory() {
+        return this.history;
+    }
+
+    // Setter 메서드
+    public void setHistory(int newHistoryNumber) {
+        this.history.add(newHistoryNumber);
     }
 }
 
