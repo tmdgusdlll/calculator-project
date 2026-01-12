@@ -42,7 +42,14 @@ public class Calculator {
 
     // Setter 메서드
     public void setHistory(int newHistoryNumber) {
+        // 수정할 값을 따로 반환해서 어디 저장하지 않고 바로 history에 추가하는 것이 효율적.
         this.history.add(newHistoryNumber);
+    }
+
+    // 삭제하는 메서드
+    // 가장 먼저 저장된 데이터 -> 배열의 원소..? 에서 0번인덱스 삭제하면 되나?
+    public void removeResult() {
+        history.remove(0);
     }
 }
 
