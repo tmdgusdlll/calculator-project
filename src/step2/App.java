@@ -1,5 +1,7 @@
 package step2;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class App {
@@ -51,9 +53,18 @@ public class App {
             System.out.println("더 계산하시겠습니가? (exit 입력시 종료)");
             String answer = sc.nextLine();
             if (answer.equals("exit")) {
+                System.out.println("계산기를 종료합니다.");
                 break;
             }
-            System.out.println("계산기를 종료합니다.");
+            // Setter 접근
+            cal.setHistory(result);
+
+            // Getter 접근
+            List<Integer> resultHistory = cal.getHistory();
+            System.out.println("이전 연산 결과: " + resultHistory);
         }
     }
 }
+
+
+
