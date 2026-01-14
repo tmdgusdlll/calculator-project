@@ -14,18 +14,19 @@ public enum OperatorType {
     // 이 객체들은 딱 한 번만 생성됨(싱글톤이라고 함)
 
     // char(문자열) 형식의 symbol(연산기호) 필드 (속성) 추가
+    private final char symbol;
 
     // 생성자
-    OperatorType(char operator) {
-        this.operator = operator;
+    OperatorType(char symbol) {
+        this.symbol = symbol;
     }
-    private final char operator;
 
     // 게터
-    public static OperatorType findOperator(char operator) {
+    public static OperatorType findSymbol(char operator) {
        return Arrays.stream(OperatorType.values())
-               .filter(o -> o.operator == operator)
+               .filter(o -> o.symbol == operator)
                .findFirst()
-               .orElseThrow(()-> new IllegalArgumentException("잘못된 연산입니다."));
+               .orElseThrow(()-> new IllegalArgumentException("잘못된 연산자입니다."));
+       // TODO: 예외처리 해야함 (아리스메틱클래스에서)
     }
 }
