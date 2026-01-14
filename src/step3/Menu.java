@@ -1,5 +1,6 @@
 package step3;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu {
@@ -14,10 +15,17 @@ public class Menu {
         System.out.println("3. 가장 처음 기록 삭제하기");
         System.out.println("0. 종료하기");
         System.out.println("=================");
+
+       // TODO: 나중에 do - while로 바꿔볼까..?
         while (true) {
             System.out.print("계산기 메뉴를 선택하시오: ");
-            int answer = Integer.parseInt(sc.nextLine());
-            // TODO: 예외처리 필요
+            int answer = 0;
+            try {
+                answer = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("숫자를 입력하세요.");
+                continue;
+            }
 
             switch (answer) {
                 case 1:
@@ -45,21 +53,53 @@ public class Menu {
 
     public void calculate() {
         // TODO: 예외처리 필요 num1, num2, operator
-        System.out.print("첫 번째 숫자를 입력하세요: ");
-        double num1 = Double.parseDouble(sc.nextLine());
+        while (true) {
+            double num1 = 0;
+            double num2 = 0;
 
-        System.out.print("사칙연산 기호를 입력하세요 (+, -, *, /): ");
-        char operator = sc.nextLine().charAt(0);
+            char operator = 0;
+            while (true) {
+                try {
+                    System.out.print("첫 번째 숫자를 입력하세요: ");
+                    num1 = Double.parseDouble(sc.nextLine());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("숫자를 입력하세요.");
+                }
+            }
 
-        System.out.print("두 번째 숫자를 입력하세요: ");
-        double num2 = Double.parseDouble(sc.nextLine());
+            while (true) {
+                System.out.print("사칙연산 기호를 입력하세요 (+, -, *, /): ");
+                operator = sc.nextLine().charAt(0);
+                if (operator == '+' || operator == '-' || operator == '*' || operator == '/') {
+                    break;
+                } else {
+                    System.out.println("올바른 사칙연산 기호가 아닙니다.");
+                }
+            }
 
-        double result = calculator.calculate(num1, num2, operator);
-        calculator.setHistory(result);
+            while (true) {
+                try {
+                    System.out.print("두 번째 숫자를 입력하세요: ");
+                    num2 = Double.parseDouble(sc.nextLine());
+                    if (operator == '/' && num2 == 0) {
+                        System.out.println("0으로 나눌 수 없습니다.");
+                        continue;
+                    }
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("숫자를 입력하세요.");
+                }
+            }
+            double result = calculator.calculate(num1, num2, operator);
+            calculator.setHistory(result);
 
-        System.out.println("결과: " + result);
+            System.out.println("결과: " + result);
+            }
+        // TODO : 연산자 예외처리(/0) + 무한반복되는 거 해결
+        // TODO : 무한반복의 이유를 찾자.. 예외처리는 완료!
+
     }
-
     public void getHistory() {
         System.out.println("--계산 기록--");
         System.out.println(calculator.getHistory());
