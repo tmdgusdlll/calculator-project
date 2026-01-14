@@ -16,7 +16,7 @@ public class Menu {
         System.out.println("0. 종료하기");
         System.out.println("=================");
 
-       // TODO: 나중에 do - while로 바꿔볼까..?
+        // TODO: 나중에 do - while로 바꿔볼까..?
         while (true) {
             System.out.print("계산기 메뉴를 선택하시오: ");
             int answer = 0;
@@ -52,63 +52,81 @@ public class Menu {
     }
 
     public void calculate() {
-        // TODO: 예외처리 필요 num1, num2, operator
+        double num1 = 0;
+        double num2 = 0;
+        double result = 0;
+        char operator = 0;
+
         while (true) {
-            double num1 = 0;
-            double num2 = 0;
+            try {
+                System.out.print("첫 번째 숫자를 입력하세요: ");
+                num1 = Double.parseDouble(sc.nextLine());
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("숫자를 입력하세요.");
+            }
+        }
 
-            char operator = 0;
-            while (true) {
-                try {
-                    System.out.print("첫 번째 숫자를 입력하세요: ");
-                    num1 = Double.parseDouble(sc.nextLine());
-                    break;
-                } catch (NumberFormatException e) {
-                    System.out.println("숫자를 입력하세요.");
+        while (true) {
+            System.out.print("사칙연산 기호를 입력하세요 (+, -, *, /): ");
+            operator = sc.nextLine().charAt(0);
+            if (operator == '+' || operator == '-' || operator == '*' || operator == '/') {
+                break;
+            } else {
+                System.out.println("올바른 사칙연산 기호가 아닙니다.");
+            }
+        }
+
+        while (true) {
+            try {
+                System.out.print("두 번째 숫자를 입력하세요: ");
+                num2 = Double.parseDouble(sc.nextLine());
+                if (operator == '/' && num2 == 0) {
+                    System.out.println("0으로 나눌 수 없습니다.");
+                    continue;
                 }
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("숫자를 입력하세요.");
             }
+        }
+        result = calculator.calculate(num1, num2, operator);
+        calculator.setHistory(result);
+        System.out.println("결과: " + result);
 
-            while (true) {
-                System.out.print("사칙연산 기호를 입력하세요 (+, -, *, /): ");
-                operator = sc.nextLine().charAt(0);
-                if (operator == '+' || operator == '-' || operator == '*' || operator == '/') {
-                    break;
-                } else {
-                    System.out.println("올바른 사칙연산 기호가 아닙니다.");
-                }
+        while (true) {
+            System.out.println("더 계산하시겠습니까? (y/n): ");
+            String reStart = sc.nextLine();
+            if (reStart.equals("y")) {
+                break;
+            } else if (reStart.equals("n")) {
+                return;
+            } else {
+                System.out.println("y 또는 n만 입력해주세요.");
             }
-
-            while (true) {
-                try {
-                    System.out.print("두 번째 숫자를 입력하세요: ");
-                    num2 = Double.parseDouble(sc.nextLine());
-                    if (operator == '/' && num2 == 0) {
-                        System.out.println("0으로 나눌 수 없습니다.");
-                        continue;
-                    }
-                    break;
-                } catch (NumberFormatException e) {
-                    System.out.println("숫자를 입력하세요.");
-                }
-            }
-            double result = calculator.calculate(num1, num2, operator);
-            calculator.setHistory(result);
-
-            System.out.println("결과: " + result);
-            }
-        // TODO : 연산자 예외처리(/0) + 무한반복되는 거 해결
-        // TODO : 무한반복의 이유를 찾자.. 예외처리는 완료!
-
+        }
     }
+
     public void getHistory() {
-        System.out.println("--계산 기록--");
-        System.out.println(calculator.getHistory());
+        if (calculator.getHistory().isEmpty()) {
+            System.out.println("계산 기록이 없습니다.");
+            return;
+        } else {
+            System.out.println("--계산 기록--");
+            System.out.println(calculator.getHistory());
+        }
     }
 
     public void removeResult() {
-        calculator.removeResult();
-        System.out.println("삭제되었습니다.");
-        System.out.println("--계산 기록--");
-        System.out.println(calculator.getHistory());
+        // 계산 기록이 없는데 삭제 요청할 시 예외처리
+        if (calculator.getHistory().isEmpty()) {
+            System.out.println("계산 기록이 없습니다.");
+            return;
+        } else {
+            calculator.removeResult();
+            System.out.println("삭제되었습니다.");
+            System.out.println("--계산 기록--");
+            System.out.println(calculator.getHistory());
+        }
     }
 }

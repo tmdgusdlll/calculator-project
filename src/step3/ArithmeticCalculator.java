@@ -10,7 +10,6 @@ public class ArithmeticCalculator {
 
     double result;
 
-    String operator;
 
     // 제네릭 메서드 선언 (double 타입의 값을 받아도 연산이 되도록 만들기)
     public <T extends Number> double calculate(T num1, T num2, char operator) {
