@@ -7,10 +7,33 @@ import java.util.Arrays;
 
 public enum OperatorType {
     // enum 상수 (enum값, enum 인스턴스) 라고 한다.. 밑의 코드들이 있으면 실행시점에 JVM이 자동으로 객체 1개씩 생성.
-    PLUS('+'),
-    MINUS('-'),
-    MULTIPLY('*'),
-    DIVIDE('/');
+    PLUS('+') {
+        @Override
+        public double apply(double num1, double num2) {
+            return num1 + num2;
+        }
+    },
+    MINUS('-') {
+        @Override
+        public double apply(double num1, double num2) {
+            return num1 - num2;
+        }
+    },
+    MULTIPLY('*') {
+        @Override
+        public double apply(double num1, double num2) {
+            return num1 * num2;
+        }
+    },
+    DIVIDE('/') {
+        @Override
+        public double apply(double num1, double num2) {
+            if (num2 == 0) {
+                throw new ArithmeticException("0으로 나눌 수 없습니다.");
+            }
+            return num1 / num2;
+        }
+    };
     // 이 객체들은 딱 한 번만 생성됨(싱글톤이라고 함)
 
     // char(문자열) 형식의 symbol(연산기호) 필드 (속성) 추가
@@ -21,7 +44,9 @@ public enum OperatorType {
         this.symbol = symbol;
     }
 
-    // 게터
+    // 추상메서드
+    public abstract double apply(double num1, double num2);
+
     // TODO: 아직 개념이 완전히 내 것이 아닌듯. 추가학습 할 것(스트림, 람다, orElseThrow())
     public static OperatorType findSymbol(char operator) {
        return Arrays.stream(OperatorType.values())

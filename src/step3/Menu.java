@@ -16,6 +16,7 @@ public class Menu {
         System.out.println("1. 계산하기");
         System.out.println("2. 계산 기록 보기");
         System.out.println("3. 가장 처음 기록 삭제하기");
+        System.out.println("4. 특정 값보다 큰 결과값 조회하기");
         System.out.println("0. 종료하기");
         System.out.println("=================");
 
@@ -32,16 +33,11 @@ public class Menu {
             }
 
             switch (answer) {
-                case 1:
-                    calculate();
-                    break;
-                case 2:
-                    showHistory();
-                    break;
-                case 3:
-                    deleteFirst();
-                    break;
-                case 0: {
+                case 1 -> calculate();
+                case 2 -> showHistory();
+                case 3 -> deleteFirst();
+                case 4 -> showGreater();
+                case 0 -> {
                     System.out.println("종료하시겠습니가? (exit 입력 시 종료): ");
                     String response = sc.nextLine();
                     if (response.equalsIgnoreCase("exit")) {
@@ -49,8 +45,7 @@ public class Menu {
                     }
                     return;
                 }
-                default:
-                    System.out.println("잘못된 입력입니다.");
+                default -> System.out.println("잘못된 입력입니다.");
             }
         }
     }
@@ -72,13 +67,15 @@ public class Menu {
                 }
             }
 
+            OperatorType op;
             while (true) {
                 System.out.print("사칙연산 기호를 입력하세요 (+, -, *, /): ");
-                operator = sc.nextLine().charAt(0); // 입력받은 문자열 중 첫 번째 문자(인덱스 0)만 추출하겠다.
-                if (operator == '+' || operator == '-' || operator == '*' || operator == '/') {
+                operator = sc.nextLine().charAt(0);// 입력받은 문자열 중 첫 번째 문자(인덱스 0)만 추출하겠다.
+                try {
+                    op = OperatorType.findSymbol(operator);
                     break;
-                } else {
-                    System.out.println("올바른 사칙연산 기호가 아닙니다.");
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
                 }
             }
 
@@ -96,7 +93,7 @@ public class Menu {
                 }
             }
             // 객체화를 했기 때문에 메서드 호출 가능
-            result = calculator.calculate(num1, num2, operator);
+            result = calculator.calculate(num1, num2, op);
             calculator.setHistory(result);
             System.out.println("결과: " + result);
 
@@ -139,5 +136,12 @@ public class Menu {
         System.out.println("삭제되었습니다.");
         System.out.println("--계산 기록--");
         System.out.println(calculator.getHistory());
+    }
+
+    // 4번 입력시 특정 값보다 큰 결과값 출력
+    public void showGreater() {
+        System.out.println("기준 값을 입력하세요: ");
+        double threshold = sc.nextDouble();
+        System.out.println("기준값 보다 큰 결과값들: " + calculator.getResultsGreaterThan(threshold));
     }
 }
